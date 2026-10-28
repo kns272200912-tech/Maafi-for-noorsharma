@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our Forever ❤️</title>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(150deg,#190713,#711039,#260a27);color:#fff0f6;font-family:Georgia,serif;text-align:center;overflow-x:hidden}
+section{padding:48px 16px;max-width:760px;margin:auto}
+h1{font-size:clamp(42px,11vw,72px);color:#ffb5d0}
+h2{color:#ffc3d9}
+p{line-height:1.8}
+button{background:linear-gradient(120deg,#f04480,#a30d49);border:1px solid #ffc2d7;color:white;padding:13px 18px;border-radius:30px;margin:6px;cursor:pointer}
+.card{padding:22px;margin:18px 0;border:1px solid #ffc1d655;border-radius:22px;background:#ffffff0e;box-shadow:0 8px 28px #0002}
+.heart{font-size:65px;animation:pulse 1.5s infinite}
+@keyframes pulse{50%{transform:scale(1.15)}}
+input,textarea{padding:12px;border-radius:10px;border:0;margin:8px;max-width:95%;width:350px}
+textarea{height:85px}
+.hidden{display:none}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.petal{position:fixed;top:-35px;z-index:10;pointer-events:none;animation:fall 5s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(500deg);opacity:0}}
+footer{padding:25px;color:#ffc2d8}
+</style>
+</head>
+<body>
+
+<section id="welcome">
+ <div class="heart">❤️</div>
+ <p>A little universe made only for you</p>
+ <h1>Our Forever</h1>
+ <h2>For My Beautiful Wife 💍</h2>
+ <p>In every lifetime, I would choose you again.</p>
+ <button onclick="enter()">Open My Heart 💌</button>
+</section>
+
+<section id="main" class="hidden">
+ <div class="card">
+  <h2>Our Little Universe 🌙</h2>
+  <p>You are a beautiful part of my world. I hope this little website makes you feel loved, appreciated and special.</p>
+ </div>
+
+ <div class="card">
+  <h2>Our Love Story ✨</h2>
+  <p>When did our story begin?</p>
+  <input id="date" type="date">
+  <br><button onclick="saveDate()">Save Our Date 💗</button>
+  <p id="counter">Every moment is precious.</p>
+  <p>Our favourite memory</p>
+  <textarea id="memory" placeholder="Write your favourite memory..."></textarea>
+  <br><button onclick="saveMemory()">Save Memory 💌</button>
+  <p id="memoryStatus"></p>
+ </div>
+
+ <div class="card">
+  <h2>Secret Love Letters 💌</h2>
+  <p>Choose any envelope to reveal your message.</p>
+  <div id="letters" class="grid"></div>
+  <p id="letterText">A little surprise is waiting for you. ❤️</p>
+ </div>
+
+ <div class="card">
+  <h2>Reasons I Love You ❤️</h2>
+  <div class="heart">💗</div>
+  <p id="reason">Discover one of the many reasons.</p>
+  <button onclick="nextReason()">Another Reason 💕</button>
+ </div>
+
+ <div class="card">
+  <h2>A Bouquet Just For You 🌹</h2>
+  <div class="heart">💐</div>
+  <p>A hundred virtual roses for someone truly special.</p>
+  <button onclick="sendRoses()">Send 100 Roses 🌹</button>
+  <p id="roseText"></p>
+ </div>
+
+ <div class="card">
+  <h2>Catch My Hearts 🎮</h2>
+  <p>Tap the hearts and collect love points!</p>
+  <p>Score: <strong id="score">0</strong></p>
+  <button onclick="startGame()">Start Game ❤️</button>
+  <div id="game"></div>
+  <p id="gameText"></p>
+ </div>
+
+ <div class="card">
+  <h2>One Last Surprise 💍</h2>
+  <p>There is one more message from my heart.</p>
+  <button onclick="finalLetter()">Open My Final Letter ❤️</button>
+  <p id="finalText"></p>
+ </div>
+</section>
+
+<footer>Made with love, just for you. ❤️♾️</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+
+const letters=[
+["When you miss me","Even when we are apart, you remain a precious part of my world. Sending you all my love. ❤️"],
+["When you're sad","You never have to hide your feelings. You deserve kindness, patience and someone who listens."],
+["Why I choose you","Because sharing life's little moments with you makes them more meaningful. 💗"],
+["My promise","I promise to keep listening, respecting you and learning how to love you better."],
+["Our future","I dream of more laughter, peaceful days and beautiful memories we create together. ✨"],
+["A little thank you","Thank you for being part of my story and bringing your own special light into it."],
+["When you need a smile","Remember that you deserve happiness, respect and gentle words every day. 😊"],
+["My favourite memory","Some moments stay in our hearts forever. I hope we keep making beautiful memories together."],
+["Your birthday","May your days be filled with happiness, meaningful moments and lovely surprises. 🎂"],
+["Forever letter","Whatever tomorrow brings, I hope we keep choosing honesty, kindness and each other. ❤️"]
+];
+
+const reasons=[
+"Your kindness makes a difference.",
+"Your smile can brighten an ordinary day.",
+"I love sharing little moments with you.",
+"You inspire me to keep growing.",
+"I appreciate your honesty.",
+"I love our silly conversations.",
+"I admire your dreams.",
+"I value the way you listen.",
+"Your happiness matters to me.",
+"I enjoy discovering new things with you.",
+"I respect your individuality.",
+"You make memories meaningful.",
+"I appreciate your patience.",
+"I love learning about your world.",
+"I treasure our traditions.",
+"I admire your courage.",
+"I am grateful for our story.",
+"You deserve to feel appreciated.",
+"I love the laughter we share.",
+"I hope we keep growing together."
+];
+
+function enter(){
+ $("welcome").classList.add("hidden");
+ $("main").classList.remove("hidden");
+ petals(15);
+ window.scrollTo(0,0);
+}
+
+letters.forEach((item,i)=>{
+ const b=document.createElement("button");
+ b.textContent="💌 Letter "+(i+1);
+ b.onclick=()=>{
+  $("letterText").textContent=item[0]+": "+item[1];
+  petals(4);
+ };
+ $("letters").appendChild(b);
+});
+
+let ri=0;
+function nextReason(){
+ $("reason").textContent=reasons[ri%reasons.length];
+ ri++;
+ petals(2);
+}
+
+function petals(n=15){
+ for(let i=0;i<n;i++){
+  const p=document.createElement("span");
+  p.className="petal";
+  p.textContent=Math.random()>.5?"🌹":"💗";
+  p.style.left=Math.random()*100+"vw";
+  p.style.animationDelay=Math.random()*2+"s";
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),7000);
+ }
+}
+
+function sendRoses(){
+ petals(45);
+ $("roseText").textContent="A hundred virtual roses for you! May your days be filled with love and happiness. 🌹❤️";
+}
+
+function saveDate(){
+ const v=$("date").value;
+ if(!v){alert("Please select your special date ❤️");return}
+ const start=new Date(v+"T00:00:00");
+ const now=new Date();
+ now.setHours(0,0,0,0);
+ if(start>now){alert("Choose a date in the past.");return}
+ localStorage.setItem("ourDate",v);
+ updateCounter();
+}
+
+function updateCounter(){
+ const v=localStorage.getItem("ourDate");
+ if(!v)return;
+ const start=new Date(v+"T00:00:00");
+ const now=new Date();
+ now.setHours(0,0,0,0);
+ const days=Math.floor((now-start)/86400000);
+ $("counter").textContent="We've shared "+days+" days of our story. ❤️";
+}
+try{
+ $("date").value=localStorage.getItem("ourDate")||"";
+ updateCounter();
+ $("memory").value=localStorage.getItem("ourMemory")||"";
+}catch(e){}
+
+function saveMemory(){
+ try{
+  localStorage.setItem("ourMemory",$("memory").value);
+  $("memoryStatus").textContent="Memory saved on this device. ❤️";
+ }catch(e){
+  $("memoryStatus").textContent="Please copy your memory somewhere safe.";
+ }
+}
+
+function finalLetter(){
+ $("finalText").textContent="In every universe, in every lifetime, I would choose you again. You are appreciated, valued and precious. May our story always hold kindness, laughter and beautiful memories. You are my favourite part of this journey. ❤️♾️";
+ petals(35);
+}
+
+let score=0,gameTimer;
+function startGame(){
+ clearTimeout(gameTimer);
+ score=0;
+ $("score").textContent=score;
+ $("gameText").textContent="Tap as many hearts as you can in 15 seconds!";
+ $("game").replaceChildren();
+ let remaining=15;
+ function spawn(){
+  if(remaining<=0){
+   $("game").replaceChildren();
+   $("gameText").textContent="Time's up! You collected "+score+" love points! ❤️";
+   return;
+  }
+  const b=document.createElement("button");
+  b.textContent=["❤️","💗","💖","💕"][Math.floor(Math.random()*4)];
+  b.style.fontSize="25px";
+  b.onclick=()=>{
+   score++;
+   $("score").textContent=score;
+   b.remove();
+   if(!$("game").children.length)spawn();
+  };
+  $("game").replaceChildren(b);
+  gameTimer=setTimeout(()=>{
+   remaining--;
+   spawn();
+  },1000);
+ }
+ spawn();
+}
+
+setInterval(()=>petals(1),3500);
+</script>
+</body>
+</html>
